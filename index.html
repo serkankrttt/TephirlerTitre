@@ -3,727 +3,584 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <title>Ankara Şeker Fabrikası - Tephirler İstasyonu</title>
 
 <style>
+*{box-sizing:border-box}
 
-* {
-    box-sizing: border-box;
+:root{
+    --navy:#123b5d;
+    --blue:#1769aa;
+    --green:#218838;
+    --orange:#b7791f;
+    --bg:#eef2f5;
+    --white:#fff;
+    --border:#d7dee5;
+    --red:#c82333;
 }
 
-body {
-    margin: 0;
-    font-family: Arial, Helvetica, sans-serif;
-    background: #eef2f5;
-    color: #17202a;
+body{
+    margin:0;
+    font-family:Arial,Helvetica,sans-serif;
+    background:var(--bg);
+    color:#17202a;
 }
 
-/* =========================
-   ÜST BAŞLIK
-========================= */
-
-.header {
-    background: #123b5d;
-    color: white;
-    text-align: center;
-    padding: 25px 15px;
-    box-shadow: 0 4px 15px rgba(0,0,0,.20);
+button,input,select{
+    font:inherit;
 }
 
-.header h1 {
-    margin: 0;
-    font-size: 32px;
+.header{
+    background:var(--navy);
+    color:#fff;
+    text-align:center;
+    padding:22px 15px;
+    box-shadow:0 3px 14px rgba(0,0,0,.18);
 }
 
-.header h2 {
-    margin: 8px 0 0;
-    font-size: 20px;
-    font-weight: normal;
+.header h1{
+    margin:0;
+    font-size:clamp(22px,3vw,34px);
 }
 
-.header .date {
-    margin-top: 12px;
-    font-size: 18px;
+.header h2{
+    margin:8px 0 0;
+    font-size:clamp(15px,2vw,21px);
+    font-weight:400;
 }
 
-/* =========================
-   GENEL
-========================= */
-
-.container {
-    max-width: 1600px;
-    margin: auto;
-    padding: 25px;
+.header .date{
+    margin-top:10px;
+    font-size:16px;
 }
 
-.page {
-    display: none;
+.container{
+    max-width:1600px;
+    margin:auto;
+    padding:20px;
 }
 
-.page.active {
-    display: block;
+.page{display:none}
+.page.active{display:block}
+
+/* ANA SAYFA */
+
+.shift-grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:20px;
 }
 
-/* =========================
-   ANA SAYFA
-========================= */
-
-.shift-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 25px;
+.shift-card{
+    background:#fff;
+    border-radius:16px;
+    overflow:hidden;
+    box-shadow:0 5px 18px rgba(0,0,0,.12);
 }
 
-.shift-card {
-    background: white;
-    border-radius: 18px;
-    overflow: hidden;
-    box-shadow: 0 6px 20px rgba(0,0,0,.14);
+.shift-button{
+    width:100%;
+    border:0;
+    color:#fff;
+    padding:25px 12px;
+    font-size:clamp(26px,3vw,38px);
+    font-weight:700;
+    cursor:pointer;
 }
 
-.shift-button {
-    width: 100%;
-    border: none;
-    color: white;
-    font-size: 34px;
-    font-weight: bold;
-    padding: 28px 10px;
-    cursor: pointer;
+.shift-button:hover{
+    filter:brightness(1.07);
 }
 
-.shift-button:hover {
-    filter: brightness(1.08);
+.shift-a{background:var(--blue)}
+.shift-b{background:var(--green)}
+.shift-c{background:var(--orange)}
+
+.personnel-area{
+    padding:17px;
 }
 
-.shift-a {
-    background: #1769aa;
+.personnel-heading{
+    font-weight:700;
+    color:#444;
+    margin-bottom:12px;
 }
 
-.shift-b {
-    background: #218838;
+.person{
+    display:flex;
+    align-items:center;
+    gap:9px;
+    padding:9px 5px;
+    border-bottom:1px solid #edf0f2;
 }
 
-.shift-c {
-    background: #b7791f;
+.person:last-child{
+    border-bottom:0;
 }
 
-/* =========================
-   PERSONEL ANA SAYFA
-========================= */
-
-.personnel-area {
-    padding: 18px;
+.status-light{
+    width:17px;
+    height:17px;
+    border-radius:50%;
+    flex:0 0 17px;
 }
 
-.personnel-heading {
-    font-size: 17px;
-    font-weight: bold;
-    margin-bottom: 15px;
-    color: #444;
+.status-working{
+    background:#16a34a;
+    box-shadow:0 0 9px #16a34a;
+    animation:greenBlink 1.2s infinite;
 }
 
-.person {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    padding: 9px 5px;
-    border-bottom: 1px solid #edf0f2;
+.status-off{
+    background:#dc2626;
+    box-shadow:0 0 9px #dc2626;
+    animation:redBlink 1s infinite;
 }
 
-.status-light {
-    width: 19px;
-    height: 19px;
-    border-radius: 50%;
-    flex-shrink: 0;
+.person-name{
+    font-weight:600;
 }
 
-.status-working {
-    background: #16a34a;
-    box-shadow: 0 0 10px #16a34a;
-    animation: greenBlink 1.2s infinite;
+.off-label{
+    color:var(--red);
+    font-weight:700;
+    font-size:13px;
 }
 
-.status-off {
-    background: #dc2626;
-    box-shadow: 0 0 10px #dc2626;
-    animation: redBlink 1s infinite;
+.empty{
+    color:#888;
+    font-style:italic;
+    padding:8px 0;
 }
 
-.person-name {
-    font-weight: 600;
-    font-size: 16px;
+@keyframes greenBlink{
+    0%,100%{opacity:1}
+    50%{opacity:.25}
 }
 
-.off-label {
-    color: #c62828;
-    font-weight: bold;
-    font-size: 13px;
+@keyframes redBlink{
+    0%,100%{opacity:1}
+    50%{opacity:.25}
 }
 
-.empty-personnel {
-    color: #888;
-    font-style: italic;
-    padding: 10px 0;
+.home-tools{
+    margin-top:20px;
 }
 
-@keyframes greenBlink {
-    0%,100% {
-        opacity: 1;
-    }
+/* ORTAK BUTON */
 
-    50% {
-        opacity: .25;
-    }
+.btn{
+    border:0;
+    border-radius:8px;
+    padding:10px 16px;
+    cursor:pointer;
 }
 
-@keyframes redBlink {
-    0%,100% {
-        opacity: 1;
-    }
+.btn-primary{background:var(--blue);color:#fff}
+.btn-success{background:var(--green);color:#fff}
+.btn-danger{background:var(--red);color:#fff}
+.btn-secondary{background:#6c757d;color:#fff}
+.btn-warning{background:#d39e00;color:#fff}
 
-    50% {
-        opacity: .25;
-    }
+.btn:disabled{
+    opacity:.55;
+    cursor:not-allowed;
 }
 
-/* =========================
-   BUTONLAR
-========================= */
+/* TOOLBAR */
 
-.home-tools {
-    display: flex;
-    gap: 12px;
-    margin-top: 25px;
-    flex-wrap: wrap;
+.toolbar{
+    background:#fff;
+    border-radius:12px;
+    padding:14px;
+    margin-bottom:15px;
+    box-shadow:0 3px 12px rgba(0,0,0,.08);
+    display:flex;
+    align-items:center;
+    gap:10px;
+    flex-wrap:wrap;
 }
 
-.btn {
-    border: none;
-    border-radius: 8px;
-    padding: 11px 18px;
-    cursor: pointer;
-    font-size: 15px;
+.toolbar h2{
+    margin:0;
+    margin-right:auto;
 }
 
-.btn:hover {
-    filter: brightness(.95);
-}
-
-.btn-primary {
-    background: #1769aa;
-    color: white;
-}
-
-.btn-success {
-    background: #218838;
-    color: white;
-}
-
-.btn-danger {
-    background: #c82333;
-    color: white;
-}
-
-.btn-secondary {
-    background: #6c757d;
-    color: white;
-}
-
-.btn-warning {
-    background: #d39e00;
-    color: white;
-}
-
-/* =========================
-   TOOLBAR
-========================= */
-
-.toolbar {
-    background: white;
-    padding: 15px;
-    border-radius: 12px;
-    margin-bottom: 15px;
-    box-shadow: 0 3px 12px rgba(0,0,0,.10);
-
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    flex-wrap: wrap;
-}
-
-.toolbar h2 {
-    margin: 0;
-    margin-right: auto;
+.toolbar label{
+    font-weight:600;
 }
 
 .toolbar input,
-.toolbar select {
-    padding: 10px;
-    border: 1px solid #cbd5df;
-    border-radius: 7px;
-    font-size: 15px;
+.toolbar select{
+    padding:9px 10px;
+    border:1px solid #cbd5df;
+    border-radius:7px;
+    background:#fff;
 }
 
-/* =========================
-   UYARI
-========================= */
+/* UYARI */
 
-.warning {
-    display: none;
-    background: #fff3cd;
-    border: 1px solid #ffe69c;
-    color: #664d03;
-    padding: 12px;
-    border-radius: 8px;
-    margin-bottom: 15px;
+.warning{
+    display:none;
+    background:#fff3cd;
+    color:#664d03;
+    border:1px solid #ffe69c;
+    padding:11px;
+    border-radius:8px;
+    margin-bottom:15px;
 }
 
-/* =========================
-   ÖLÇÜM TABLOSU
-========================= */
+/* TABLO */
 
-.table-wrapper {
-    overflow-x: auto;
-    background: white;
-    border-radius: 12px;
-    box-shadow: 0 4px 15px rgba(0,0,0,.12);
+.table-wrapper{
+    background:#fff;
+    border-radius:12px;
+    box-shadow:0 4px 15px rgba(0,0,0,.10);
+    overflow:auto;
 }
 
-table {
-    border-collapse: collapse;
-    width: 100%;
-    min-width: 1750px;
+table{
+    border-collapse:collapse;
+    width:100%;
+    min-width:1750px;
 }
 
-th {
-    background: #123b5d;
-    color: white;
-    padding: 12px 8px;
-    font-size: 14px;
-    white-space: nowrap;
+th{
+    background:var(--navy);
+    color:#fff;
+    padding:11px 8px;
+    white-space:nowrap;
+    font-size:13px;
 }
 
-td {
-    border: 1px solid #d6dde3;
-    padding: 0;
-    text-align: center;
+td{
+    border:1px solid var(--border);
+    padding:0;
+    text-align:center;
 }
 
-td input {
-    width: 100%;
-    min-width: 75px;
-    padding: 11px 5px;
-    border: none;
-    text-align: center;
-    font-size: 15px;
-    outline: none;
+td input{
+    border:0;
+    outline:0;
+    width:100%;
+    min-width:75px;
+    padding:11px 5px;
+    text-align:center;
 }
 
-td input:focus {
-    background: #fff4b8;
+td input:focus{
+    background:#fff4b8;
 }
 
-td input:disabled {
-    background: #f5f6f7;
+td input:disabled{
+    background:#f4f5f6;
 }
 
-td select {
-    width: 100%;
-    min-width: 170px;
-    padding: 10px 5px;
-    border: none;
-    font-size: 14px;
-    outline: none;
+td select{
+    width:100%;
+    min-width:170px;
+    border:0;
+    outline:0;
+    padding:10px 5px;
 }
 
-td select:focus {
-    background: #fff4b8;
+td select:focus{
+    background:#fff4b8;
 }
 
-td select:disabled {
-    background: #f5f6f7;
+td select:disabled{
+    background:#f4f5f6;
 }
 
-.time-cell {
-    background: #edf1f4;
-    font-weight: bold;
-    padding: 10px;
-    white-space: nowrap;
+.time-cell{
+    background:#edf1f4;
+    font-weight:700;
+    padding:10px;
+    white-space:nowrap;
 }
 
-.operator-cell {
-    min-width: 180px;
-    background: #f8fafc;
+.operator-cell{
+    min-width:180px;
+    background:#f8fafc;
 }
 
-/* =========================
-   PERSONEL YÖNETİMİ
-========================= */
+/* PERSONEL YÖNETİMİ */
 
-.management-card {
-    background: white;
-    padding: 25px;
-    border-radius: 14px;
-    box-shadow: 0 4px 15px rgba(0,0,0,.10);
-    margin-bottom: 20px;
+.management-card{
+    background:#fff;
+    padding:22px;
+    border-radius:13px;
+    box-shadow:0 4px 15px rgba(0,0,0,.09);
+    margin-bottom:18px;
 }
 
-.management-card h2 {
-    margin-top: 0;
+.management-card h2{
+    margin-top:0;
 }
 
-.form-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 15px;
+.form-grid{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:14px;
 }
 
-.form-group label {
-    display: block;
-    font-weight: bold;
-    margin-bottom: 6px;
+.form-group label{
+    display:block;
+    font-weight:700;
+    margin-bottom:6px;
 }
 
 .form-group input,
-.form-group select {
-    width: 100%;
-    padding: 11px;
-    border: 1px solid #cbd5df;
-    border-radius: 7px;
-    font-size: 15px;
+.form-group select{
+    width:100%;
+    padding:11px;
+    border:1px solid #cbd5df;
+    border-radius:7px;
 }
 
-.personnel-management-row {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 15px;
-    background: white;
-    padding: 15px;
-    margin-bottom: 10px;
-    border-radius: 10px;
-    box-shadow: 0 2px 8px rgba(0,0,0,.08);
+.personnel-management-row{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:15px;
+    background:#fff;
+    border:1px solid #e2e6ea;
+    border-radius:10px;
+    padding:14px;
+    margin-bottom:10px;
 }
 
-.management-info strong {
-    font-size: 17px;
+.management-info{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    flex-wrap:wrap;
 }
 
-.management-info span {
-    margin-left: 10px;
-    color: #555;
+.management-info strong{
+    font-size:17px;
 }
 
-.management-buttons {
-    display: flex;
-    gap: 6px;
+.management-info span{
+    color:#555;
 }
 
-/* =========================
-   MOBİL
-========================= */
+.management-buttons{
+    display:flex;
+    gap:6px;
+}
 
-@media(max-width: 950px) {
+.status-box{
+    margin-top:12px;
+    padding:10px;
+    border-radius:8px;
+    display:none;
+}
 
-    .shift-grid {
-        grid-template-columns: 1fr;
+.status-success{
+    display:block;
+    background:#d1e7dd;
+    color:#0f5132;
+}
+
+.status-error{
+    display:block;
+    background:#f8d7da;
+    color:#842029;
+}
+
+/* MOBİL */
+
+@media(max-width:900px){
+    .shift-grid{
+        grid-template-columns:1fr;
     }
 
-    .form-grid {
-        grid-template-columns: 1fr;
+    .form-grid{
+        grid-template-columns:1fr 1fr;
     }
 
-    .header h1 {
-        font-size: 24px;
-    }
-
-    .header h2 {
-        font-size: 17px;
-    }
-
-    .personnel-management-row {
-        flex-direction: column;
-        align-items: flex-start;
+    .toolbar h2{
+        width:100%;
     }
 }
 
+@media(max-width:600px){
+    .container{
+        padding:12px;
+    }
+
+    .header{
+        padding:18px 10px;
+    }
+
+    .form-grid{
+        grid-template-columns:1fr;
+    }
+
+    .toolbar{
+        align-items:stretch;
+    }
+
+    .toolbar label{
+        width:100%;
+        display:flex;
+        flex-direction:column;
+        gap:5px;
+    }
+
+    .toolbar .btn{
+        width:100%;
+    }
+
+    .personnel-management-row{
+        align-items:flex-start;
+        flex-direction:column;
+    }
+
+    .management-buttons{
+        width:100%;
+    }
+
+    .management-buttons .btn{
+        flex:1;
+    }
+
+    .shift-button{
+        padding:22px 10px;
+    }
+}
 </style>
 </head>
 
 <body>
 
-<!-- ==================================================
-     BAŞLIK
-================================================== -->
-
 <header class="header">
-
     <h1>ANKARA ŞEKER FABRİKASI</h1>
-
-    <h2>
-        TEPHİRLER İSTASYONU - TİTRE TAKİP SİSTEMİ
-    </h2>
-
-    <div
-        class="date"
-        id="todayDate">
-    </div>
-
+    <h2>TEPHİRLER İSTASYONU - TİTRE TAKİP SİSTEMİ</h2>
+    <div id="todayDate" class="date"></div>
 </header>
-
 
 <div class="container">
 
+<!-- ================= ANA SAYFA ================= -->
 
-<!-- ==================================================
-     ANA SAYFA
-================================================== -->
-
-<section
-    id="homePage"
-    class="page active">
+<section id="homePage" class="page active">
 
     <div class="shift-grid">
 
-
-        <!-- A POSTASI -->
-
         <div class="shift-card">
-
-            <button
-                class="shift-button shift-a"
-                onclick="openShift('A')">
-
+            <button class="shift-button shift-a" onclick="openShift('A')">
                 A POSTASI
-
             </button>
 
             <div class="personnel-area">
-
-                <div class="personnel-heading">
-                    A Postası Personelleri
-                </div>
-
+                <div class="personnel-heading">A Postası Personelleri</div>
                 <div id="homePersonnelA"></div>
-
             </div>
-
         </div>
 
-
-        <!-- B POSTASI -->
-
         <div class="shift-card">
-
-            <button
-                class="shift-button shift-b"
-                onclick="openShift('B')">
-
+            <button class="shift-button shift-b" onclick="openShift('B')">
                 B POSTASI
-
             </button>
 
             <div class="personnel-area">
-
-                <div class="personnel-heading">
-                    B Postası Personelleri
-                </div>
-
+                <div class="personnel-heading">B Postası Personelleri</div>
                 <div id="homePersonnelB"></div>
-
             </div>
-
         </div>
 
-
-        <!-- C POSTASI -->
-
         <div class="shift-card">
-
-            <button
-                class="shift-button shift-c"
-                onclick="openShift('C')">
-
+            <button class="shift-button shift-c" onclick="openShift('C')">
                 C POSTASI
-
             </button>
 
             <div class="personnel-area">
-
-                <div class="personnel-heading">
-                    C Postası Personelleri
-                </div>
-
+                <div class="personnel-heading">C Postası Personelleri</div>
                 <div id="homePersonnelC"></div>
-
             </div>
-
         </div>
 
     </div>
 
-
     <div class="home-tools">
-
-        <button
-            class="btn btn-primary"
-            onclick="showPage('personnelPage')">
-
+        <button class="btn btn-primary" onclick="showPage('personnelPage')">
             ⚙ Personel Ayarları
-
         </button>
-
     </div>
 
 </section>
 
 
-<!-- ==================================================
-     ÖLÇÜM SAYFASI
-================================================== -->
+<!-- ================= ÖLÇÜM SAYFASI ================= -->
 
-<section
-    id="measurementPage"
-    class="page">
-
+<section id="measurementPage" class="page">
 
     <div class="toolbar">
 
-
-        <button
-            class="btn btn-secondary"
-            onclick="showPage('homePage')">
-
+        <button class="btn btn-secondary" onclick="showPage('homePage')">
             ← Ana Sayfa
-
         </button>
 
-
-        <h2 id="shiftTitle">
-        </h2>
-
+        <h2 id="shiftTitle"></h2>
 
         <label>
-
             Tarih:
-
             <input
                 type="date"
                 id="measurementDate"
-                onchange="loadMeasurements()">
-
+                onchange="loadMeasurements()"
+            >
         </label>
-
 
         <button
             class="btn btn-primary"
             id="newMeasurementButton"
             onclick="addRow()">
-
             + Yeni Ölçüm
-
         </button>
-
 
         <button
             class="btn btn-success"
             id="saveButton"
             onclick="saveMeasurements()">
-
             💾 Kaydet
-
         </button>
 
     </div>
 
-
-    <div
-        id="readonlyWarning"
-        class="warning">
-
-        ⚠️ Geçmiş tarih görüntüleniyor.
-        Eski ölçümler sadece görüntülenebilir.
-
+    <div id="readonlyWarning" class="warning">
+        ⚠️ Geçmiş tarih görüntüleniyor. Eski kayıtlar değiştirilemez.
     </div>
 
+    <div id="measurementStatus" class="status-box"></div>
 
     <div class="table-wrapper">
 
         <table>
 
             <thead>
-
                 <tr>
-
-                    <th>
-                        Saat
-                    </th>
-
-                    <th>
-                        Ölçümü Yapan
-                    </th>
-
-                    <th>
-                        Sat 1 pH
-                    </th>
-
-                    <th>
-                        Sat 1 Alkalite
-                    </th>
-
-                    <th>
-                        Sat 2 pH
-                    </th>
-
-                    <th>
-                        Sat 2 Alkalite
-                    </th>
-
-                    <th>
-                        Kireçleme 2
-                    </th>
-
-                    <th>
-                        Kireçleme 1.1
-                    </th>
-
-                    <th>
-                        Kireçleme 1.2
-                    </th>
-
-                    <th>
-                        1. Sütun
-                    </th>
-
-                    <th>
-                        Brix
-                    </th>
-
-                    <th>
-                        2. Sütun
-                    </th>
-
-                    <th>
-                        3. Sütun
-                    </th>
-
-                    <th>
-                        4. Sütun
-                    </th>
-
-                    <th>
-                        Sil
-                    </th>
-
+                    <th>Saat</th>
+                    <th>Ölçümü Yapan</th>
+                    <th>Sat 1 pH</th>
+                    <th>Sat 1 Alkalite</th>
+                    <th>Sat 2 pH</th>
+                    <th>Sat 2 Alkalite</th>
+                    <th>Kireçleme 2</th>
+                    <th>Kireçleme 1.1</th>
+                    <th>Kireçleme 1.2</th>
+                    <th>1. Sütun</th>
+                    <th>Brix</th>
+                    <th>2. Sütun</th>
+                    <th>3. Sütun</th>
+                    <th>4. Sütun</th>
+                    <th>Sil</th>
                 </tr>
-
             </thead>
 
-            <tbody
-                id="measurementBody">
-
-            </tbody>
+            <tbody id="measurementBody"></tbody>
 
         </table>
 
@@ -732,291 +589,196 @@ td select:disabled {
 </section>
 
 
-<!-- ==================================================
-     PERSONEL YÖNETİMİ
-================================================== -->
+<!-- ================= PERSONEL SAYFASI ================= -->
 
-<section
-    id="personnelPage"
-    class="page">
-
+<section id="personnelPage" class="page">
 
     <div class="toolbar">
 
-        <button
-            class="btn btn-secondary"
-            onclick="showPage('homePage')">
-
+        <button class="btn btn-secondary" onclick="showPage('homePage')">
             ← Ana Sayfa
-
         </button>
 
-        <h2>
-            Personel Yönetimi
-        </h2>
+        <h2>Personel Yönetimi</h2>
 
     </div>
 
-
     <div class="management-card">
 
-        <h2 id="personFormTitle">
-            Yeni Personel Ekle
-        </h2>
-
+        <h2 id="personFormTitle">Yeni Personel Ekle</h2>
 
         <div class="form-grid">
 
-
             <div class="form-group">
-
-                <label>
-                    Ad Soyad
-                </label>
-
-                <input
-                    type="text"
-                    id="personName"
-                    placeholder="Ad Soyad">
-
+                <label>Ad Soyad</label>
+                <input id="personName" type="text" placeholder="Ad Soyad">
             </div>
 
-
             <div class="form-group">
-
-                <label>
-                    Personel No
-                </label>
-
-                <input
-                    type="text"
-                    id="personNo"
-                    placeholder="Personel No">
-
+                <label>Personel No</label>
+                <input id="personNo" type="text" placeholder="Personel No">
             </div>
 
-
             <div class="form-group">
+                <label>Posta</label>
 
-                <label>
-                    Posta
-                </label>
-
-                <select
-                    id="personShift">
-
-                    <option value="A">
-                        A Postası
-                    </option>
-
-                    <option value="B">
-                        B Postası
-                    </option>
-
-                    <option value="C">
-                        C Postası
-                    </option>
-
+                <select id="personShift">
+                    <option value="A">A Postası</option>
+                    <option value="B">B Postası</option>
+                    <option value="C">C Postası</option>
                 </select>
 
             </div>
 
-
             <div class="form-group">
+                <label>Haftalık İzin</label>
 
-                <label>
-                    Haftalık İzin
-                </label>
-
-                <select
-                    id="personOffDay">
-
-                    <option value="0">
-                        Pazar
-                    </option>
-
-                    <option value="1">
-                        Pazartesi
-                    </option>
-
-                    <option value="2">
-                        Salı
-                    </option>
-
-                    <option value="3">
-                        Çarşamba
-                    </option>
-
-                    <option value="4">
-                        Perşembe
-                    </option>
-
-                    <option value="5">
-                        Cuma
-                    </option>
-
-                    <option value="6">
-                        Cumartesi
-                    </option>
-
+                <select id="personOffDay">
+                    <option value="0">Pazar</option>
+                    <option value="1">Pazartesi</option>
+                    <option value="2">Salı</option>
+                    <option value="3">Çarşamba</option>
+                    <option value="4">Perşembe</option>
+                    <option value="5">Cuma</option>
+                    <option value="6">Cumartesi</option>
                 </select>
 
             </div>
 
         </div>
 
-
         <br>
 
-
-        <button
-            class="btn btn-success"
-            id="personSaveButton"
-            onclick="savePersonnel()">
-
+        <button class="btn btn-success" onclick="savePersonnel()">
             Personeli Kaydet
-
         </button>
-
 
         <button
             class="btn btn-secondary"
             id="cancelEditButton"
             style="display:none"
             onclick="cancelEdit()">
-
             İptal
-
         </button>
+
+        <div id="personStatus" class="status-box"></div>
 
     </div>
 
-
     <div class="management-card">
 
-        <h2>
-            Kayıtlı Personeller
-        </h2>
+        <h2>Kayıtlı Personeller</h2>
 
-        <div
-            id="managementPersonnelList">
-
-        </div>
+        <div id="managementPersonnelList"></div>
 
     </div>
 
 </section>
 
-
 </div>
 
 
+<!-- =====================================================
+     SUPABASE
+===================================================== -->
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
 <script>
 
-/* ==================================================
-   GLOBAL DEĞİŞKENLER
-================================================== */
+const SUPABASE_URL =
+    "https://abtbploqwxeohrwymygr.supabase.co";
+
+const SUPABASE_KEY =
+    "sb_publishable_YryX3xTCDwSFW8n5v_pQqg_qS0jui5E";
+
+const db =
+    window.supabase.createClient(
+        SUPABASE_URL,
+        SUPABASE_KEY
+    );
+
+
+/* =====================================================
+   DEĞİŞKENLER
+===================================================== */
 
 let currentShift = null;
-
 let editingPersonnelId = null;
 
 
-/* ==================================================
-   LOCAL STORAGE - PERSONEL
-================================================== */
-
-function getPersonnel() {
-
-    return JSON.parse(
-        localStorage.getItem(
-            "personnelList"
-        ) || "[]"
-    );
-
-}
-
-
-function savePersonnelStorage(list) {
-
-    localStorage.setItem(
-        "personnelList",
-        JSON.stringify(list)
-    );
-
-}
-
-
-/* ==================================================
-   BUGÜNÜ AL
-================================================== */
+/* =====================================================
+   TARİH
+===================================================== */
 
 function getToday() {
 
-    const now = new Date();
+    const d = new Date();
 
     const year =
-        now.getFullYear();
+        d.getFullYear();
 
     const month =
-        String(
-            now.getMonth() + 1
-        ).padStart(2, "0");
+        String(d.getMonth() + 1)
+            .padStart(2, "0");
 
     const day =
-        String(
-            now.getDate()
-        ).padStart(2, "0");
+        String(d.getDate())
+            .padStart(2, "0");
 
-    return (
-        year +
-        "-" +
-        month +
-        "-" +
-        day
-    );
-
+    return `${year}-${month}-${day}`;
 }
 
-
-/* ==================================================
-   TARİHİ GÖSTER
-================================================== */
 
 function formatDate(dateString) {
 
-    const date =
+    const d =
         new Date(
-            dateString +
-            "T00:00:00"
+            dateString + "T00:00:00"
         );
 
-    return date.toLocaleDateString(
+    return d.toLocaleDateString(
         "tr-TR",
         {
-            weekday: "long",
-            day: "2-digit",
-            month: "long",
-            year: "numeric"
+            weekday:"long",
+            day:"2-digit",
+            month:"long",
+            year:"numeric"
         }
     );
+}
+
+
+document.getElementById("todayDate")
+    .textContent =
+    formatDate(getToday());
+
+
+/* =====================================================
+   GENEL DURUM MESAJI
+===================================================== */
+
+function showStatus(elementId, message, type) {
+
+    const el =
+        document.getElementById(elementId);
+
+    el.textContent = message;
+
+    el.className =
+        "status-box " +
+        (
+            type === "error"
+                ? "status-error"
+                : "status-success"
+        );
 
 }
 
 
-document
-    .getElementById(
-        "todayDate"
-    )
-    .innerText =
-    formatDate(
-        getToday()
-    );
-
-
-/* ==================================================
-   SAYFA DEĞİŞTİR
-================================================== */
+/* =====================================================
+   SAYFA
+===================================================== */
 
 function showPage(pageId) {
 
@@ -1024,210 +786,226 @@ function showPage(pageId) {
         .querySelectorAll(".page")
         .forEach(page => {
 
-            page.classList.remove(
-                "active"
-            );
+            page.classList.remove("active");
 
         });
 
-
     document
         .getElementById(pageId)
-        .classList.add(
-            "active"
-        );
+        .classList.add("active");
 
 
-    if(
-        pageId === "homePage"
-    ) {
+    if(pageId === "homePage") {
 
-        renderHomePersonnel();
+        loadHomePersonnel();
 
     }
 
 
-    if(
-        pageId === "personnelPage"
-    ) {
+    if(pageId === "personnelPage") {
 
-        renderManagementPersonnel();
+        loadPersonnelManagement();
 
     }
 
 }
 
 
-/* ==================================================
-   ANA SAYFA PERSONELLER
-================================================== */
+/* =====================================================
+   PERSONELLERİ SUPABASE'DEN GETİR
+===================================================== */
 
-function renderHomePersonnel() {
+async function getPersonnel() {
 
-    const personnel =
-        getPersonnel();
-
-
-    ["A", "B", "C"]
-        .forEach(shift => {
-
-
-            const container =
-                document.getElementById(
-                    "homePersonnel" +
-                    shift
-                );
+    const {
+        data,
+        error
+    } = await db
+        .from("personnel")
+        .select("*")
+        .order("name", {
+            ascending:true
+        });
 
 
-            container.innerHTML = "";
+    if(error) {
+
+        console.error(error);
+
+        throw new Error(
+            "Personeller alınamadı: " +
+            error.message
+        );
+
+    }
 
 
-            const list =
-                personnel.filter(
-                    person =>
-                        person.shift ===
+    return data || [];
+
+}
+
+
+/* =====================================================
+   ANA SAYFADA PERSONELLER
+===================================================== */
+
+async function loadHomePersonnel() {
+
+    try {
+
+        const personnel =
+            await getPersonnel();
+
+
+        ["A","B","C"]
+            .forEach(shift => {
+
+                const container =
+                    document.getElementById(
+                        "homePersonnel" +
                         shift
-                );
+                    );
+
+                container.innerHTML = "";
 
 
-            if(
-                list.length === 0
-            ) {
-
-                container.innerHTML = `
-                    <div class="empty-personnel">
-                        Bu postada kayıtlı personel yok.
-                    </div>
-                `;
-
-                return;
-
-            }
-
-
-            list.forEach(person => {
-
-
-                const isOff =
-                    Number(
-                        person.offDay
-                    ) ===
-                    new Date().getDay();
-
-
-                const div =
-                    document.createElement(
-                        "div"
+                const list =
+                    personnel.filter(
+                        p =>
+                            p.shift === shift
                     );
 
 
-                div.className =
-                    "person";
+                if(list.length === 0) {
 
+                    container.innerHTML =
+                        `<div class="empty">
+                            Bu postada kayıtlı personel yok.
+                         </div>`;
 
-                if(isOff) {
-
-                    div.innerHTML = `
-
-                        <span
-                            class="status-light status-off">
-                        </span>
-
-                        <span
-                            class="person-name">
-
-                            ${escapeHtml(
-                                person.name
-                            )}
-
-                        </span>
-
-                        <span
-                            class="off-label">
-
-                            İZİNLİ
-
-                        </span>
-
-                    `;
-
-                } else {
-
-                    div.innerHTML = `
-
-                        <span
-                            class="status-light status-working">
-                        </span>
-
-                        <span
-                            class="person-name">
-
-                            ${escapeHtml(
-                                person.name
-                            )}
-
-                        </span>
-
-                    `;
+                    return;
 
                 }
 
 
-                container.appendChild(
-                    div
-                );
+                const today =
+                    new Date().getDay();
+
+
+                list.forEach(person => {
+
+                    const isOff =
+                        Number(person.off_day) ===
+                        today;
+
+
+                    const div =
+                        document.createElement("div");
+
+
+                    div.className =
+                        "person";
+
+
+                    if(isOff) {
+
+                        div.innerHTML = `
+
+                            <span class="status-light status-off"></span>
+
+                            <span class="person-name">
+                                ${escapeHtml(person.name)}
+                            </span>
+
+                            <span class="off-label">
+                                İZİNLİ
+                            </span>
+
+                        `;
+
+                    } else {
+
+                        div.innerHTML = `
+
+                            <span class="status-light status-working"></span>
+
+                            <span class="person-name">
+                                ${escapeHtml(person.name)}
+                            </span>
+
+                        `;
+
+                    }
+
+
+                    container.appendChild(div);
+
+                });
 
             });
 
-        });
+
+    } catch(error) {
+
+        console.error(error);
+
+        ["A","B","C"]
+            .forEach(shift => {
+
+                document.getElementById(
+                    "homePersonnel" + shift
+                ).innerHTML =
+                    `<div class="empty">
+                        Personeller yüklenemedi.
+                     </div>`;
+
+            });
+
+    }
 
 }
 
 
-/* ==================================================
-   PERSONEL KAYDET
-================================================== */
+/* =====================================================
+   PERSONEL EKLE / GÜNCELLE
+===================================================== */
 
-function savePersonnel() {
+async function savePersonnel() {
 
     const name =
         document
-            .getElementById(
-                "personName"
-            )
+            .getElementById("personName")
             .value
             .trim();
 
 
     const personNo =
         document
-            .getElementById(
-                "personNo"
-            )
+            .getElementById("personNo")
             .value
             .trim();
 
 
     const shift =
         document
-            .getElementById(
-                "personShift"
-            )
+            .getElementById("personShift")
             .value;
 
 
     const offDay =
-        document
-            .getElementById(
-                "personOffDay"
-            )
-            .value;
+        Number(
+            document
+                .getElementById("personOffDay")
+                .value
+        );
 
 
     if(!name) {
 
-        alert(
-            "Ad Soyad girin."
+        showStatus(
+            "personStatus",
+            "Ad Soyad girin.",
+            "error"
         );
 
         return;
@@ -1235,239 +1013,413 @@ function savePersonnel() {
     }
 
 
-    let list =
-        getPersonnel();
+    try {
 
+        if(editingPersonnelId) {
 
-    if(
-        editingPersonnelId !== null
-    ) {
+            const {
+                error
+            } = await db
+                .from("personnel")
+                .update({
 
-        const person =
-            list.find(
-                p =>
-                    p.id ===
+                    name:name,
+
+                    person_no:personNo,
+
+                    shift:shift,
+
+                    off_day:offDay
+
+                })
+                .eq(
+                    "id",
                     editingPersonnelId
+                );
+
+
+            if(error) {
+
+                throw error;
+
+            }
+
+
+            showStatus(
+                "personStatus",
+                "Personel güncellendi.",
+                "success"
             );
 
 
-        if(person) {
+        } else {
 
-            person.name =
-                name;
+            const {
+                error
+            } = await db
+                .from("personnel")
+                .insert({
 
-            person.personNo =
-                personNo;
+                    name:name,
 
-            person.shift =
-                shift;
+                    person_no:personNo,
 
-            person.offDay =
-                offDay;
+                    shift:shift,
+
+                    off_day:offDay
+
+                });
+
+
+            if(error) {
+
+                throw error;
+
+            }
+
+
+            showStatus(
+                "personStatus",
+                "Personel Supabase'e kaydedildi.",
+                "success"
+            );
 
         }
 
-    } else {
 
-        list.push({
+        clearPersonnelForm();
 
-            id: Date.now(),
+        await loadPersonnelManagement();
 
-            name: name,
+        await loadHomePersonnel();
 
-            personNo:
-                personNo,
 
-            shift:
-                shift,
+    } catch(error) {
 
-            offDay:
-                offDay
+        console.error(error);
 
-        });
+        showStatus(
+            "personStatus",
+            "Personel kaydedilemedi: " +
+            error.message,
+            "error"
+        );
 
     }
 
-
-    savePersonnelStorage(
-        list
-    );
-
-
-    clearPersonnelForm();
-
-
-    renderManagementPersonnel();
-
-
-    renderHomePersonnel();
-
-
-    alert(
-        "Personel kaydedildi."
-    );
-
 }
 
 
-/* ==================================================
-   FORM TEMİZLE
-================================================== */
+/* =====================================================
+   PERSONEL LİSTESİ
+===================================================== */
 
-function clearPersonnelForm() {
+async function loadPersonnelManagement() {
 
-    document
-        .getElementById(
-            "personName"
-        )
-        .value = "";
-
-
-    document
-        .getElementById(
-            "personNo"
-        )
-        .value = "";
-
-
-    document
-        .getElementById(
-            "personShift"
-        )
-        .value = "A";
-
-
-    document
-        .getElementById(
-            "personOffDay"
-        )
-        .value = "0";
-
-
-    document
-        .getElementById(
-            "personFormTitle"
-        )
-        .innerText =
-        "Yeni Personel Ekle";
-
-
-    document
-        .getElementById(
-            "personSaveButton"
-        )
-        .innerText =
-        "Personeli Kaydet";
-
-
-    document
-        .getElementById(
-            "cancelEditButton"
-        )
-        .style.display =
-        "none";
-
-
-    editingPersonnelId =
-        null;
-
-}
-
-
-/* ==================================================
-   PERSONEL DÜZENLE
-================================================== */
-
-function editPersonnel(id) {
-
-    const list =
-        getPersonnel();
-
-
-    const person =
-        list.find(
-            p =>
-                p.id === id
+    const container =
+        document.getElementById(
+            "managementPersonnelList"
         );
 
 
-    if(!person) {
-        return;
+    container.innerHTML =
+        `<div class="empty">
+            Yükleniyor...
+         </div>`;
+
+
+    try {
+
+        const list =
+            await getPersonnel();
+
+
+        if(list.length === 0) {
+
+            container.innerHTML =
+                `<div class="empty">
+                    Henüz personel eklenmedi.
+                 </div>`;
+
+            return;
+
+        }
+
+
+        const days = [
+            "Pazar",
+            "Pazartesi",
+            "Salı",
+            "Çarşamba",
+            "Perşembe",
+            "Cuma",
+            "Cumartesi"
+        ];
+
+
+        container.innerHTML = "";
+
+
+        list.forEach(person => {
+
+            const row =
+                document.createElement("div");
+
+
+            row.className =
+                "personnel-management-row";
+
+
+            row.innerHTML = `
+
+                <div class="management-info">
+
+                    <strong>
+                        ${escapeHtml(person.name)}
+                    </strong>
+
+                    <span>
+                        No:
+                        ${escapeHtml(
+                            person.person_no || "-"
+                        )}
+                    </span>
+
+                    <span>
+                        ${person.shift} Postası
+                    </span>
+
+                    <span>
+                        İzin:
+                        ${days[Number(person.off_day)]}
+                    </span>
+
+                </div>
+
+                <div class="management-buttons">
+
+                    <button
+                        class="btn btn-warning"
+                        onclick="
+                            editPersonnel(${person.id})
+                        ">
+
+                        Düzenle
+
+                    </button>
+
+                    <button
+                        class="btn btn-danger"
+                        onclick="
+                            deletePersonnel(${person.id})
+                        ">
+
+                        Sil
+
+                    </button>
+
+                </div>
+
+            `;
+
+
+            container.appendChild(row);
+
+        });
+
+
+    } catch(error) {
+
+        console.error(error);
+
+        container.innerHTML =
+            `<div class="empty">
+                Personeller yüklenemedi.
+             </div>`;
+
     }
-
-
-    editingPersonnelId =
-        id;
-
-
-    document
-        .getElementById(
-            "personName"
-        )
-        .value =
-        person.name;
-
-
-    document
-        .getElementById(
-            "personNo"
-        )
-        .value =
-        person.personNo ||
-        "";
-
-
-    document
-        .getElementById(
-            "personShift"
-        )
-        .value =
-        person.shift;
-
-
-    document
-        .getElementById(
-            "personOffDay"
-        )
-        .value =
-        person.offDay;
-
-
-    document
-        .getElementById(
-            "personFormTitle"
-        )
-        .innerText =
-        "Personel Düzenle";
-
-
-    document
-        .getElementById(
-            "personSaveButton"
-        )
-        .innerText =
-        "Değişiklikleri Kaydet";
-
-
-    document
-        .getElementById(
-            "cancelEditButton"
-        )
-        .style.display =
-        "inline-block";
-
-
-    window.scrollTo({
-        top: 0,
-        behavior: "smooth"
-    });
 
 }
 
 
-/* ==================================================
-   DÜZENLEME İPTAL
-================================================== */
+/* =====================================================
+   PERSONEL DÜZENLE
+===================================================== */
+
+async function editPersonnel(id) {
+
+    try {
+
+        const {
+            data,
+            error
+        } = await db
+            .from("personnel")
+            .select("*")
+            .eq("id", id)
+            .single();
+
+
+        if(error) {
+
+            throw error;
+
+        }
+
+
+        editingPersonnelId =
+            data.id;
+
+
+        document.getElementById(
+            "personName"
+        ).value =
+            data.name;
+
+
+        document.getElementById(
+            "personNo"
+        ).value =
+            data.person_no || "";
+
+
+        document.getElementById(
+            "personShift"
+        ).value =
+            data.shift;
+
+
+        document.getElementById(
+            "personOffDay"
+        ).value =
+            data.off_day;
+
+
+        document.getElementById(
+            "personFormTitle"
+        ).textContent =
+            "Personel Düzenle";
+
+
+        document.getElementById(
+            "cancelEditButton"
+        ).style.display =
+            "inline-block";
+
+
+        window.scrollTo({
+            top:0,
+            behavior:"smooth"
+        });
+
+
+    } catch(error) {
+
+        showStatus(
+            "personStatus",
+            "Personel alınamadı: " +
+            error.message,
+            "error"
+        );
+
+    }
+
+}
+
+
+/* =====================================================
+   PERSONEL SİL
+===================================================== */
+
+async function deletePersonnel(id) {
+
+    if(
+        !confirm(
+            "Bu personeli silmek istediğinize emin misiniz?"
+        )
+    ) {
+
+        return;
+
+    }
+
+
+    try {
+
+        const {
+            error
+        } = await db
+            .from("personnel")
+            .delete()
+            .eq("id", id);
+
+
+        if(error) {
+
+            throw error;
+
+        }
+
+
+        await loadPersonnelManagement();
+
+        await loadHomePersonnel();
+
+
+    } catch(error) {
+
+        alert(
+            "Personel silinemedi: " +
+            error.message
+        );
+
+    }
+
+}
+
+
+/* =====================================================
+   FORM TEMİZLE
+===================================================== */
+
+function clearPersonnelForm() {
+
+    document.getElementById(
+        "personName"
+    ).value = "";
+
+
+    document.getElementById(
+        "personNo"
+    ).value = "";
+
+
+    document.getElementById(
+        "personShift"
+    ).value = "A";
+
+
+    document.getElementById(
+        "personOffDay"
+    ).value = "0";
+
+
+    document.getElementById(
+        "personFormTitle"
+    ).textContent =
+        "Yeni Personel Ekle";
+
+
+    document.getElementById(
+        "cancelEditButton"
+    ).style.display =
+        "none";
+
+
+    editingPersonnelId = null;
+
+}
+
 
 function cancelEdit() {
 
@@ -1476,229 +1428,26 @@ function cancelEdit() {
 }
 
 
-/* ==================================================
-   PERSONEL SİL
-================================================== */
-
-function deletePersonnel(id) {
-
-    const list =
-        getPersonnel();
-
-
-    const person =
-        list.find(
-            p =>
-                p.id === id
-        );
-
-
-    if(!person) {
-        return;
-    }
-
-
-    const answer =
-        confirm(
-            person.name +
-            " personeli silinsin mi?"
-        );
-
-
-    if(!answer) {
-        return;
-    }
-
-
-    const newList =
-        list.filter(
-            p =>
-                p.id !== id
-        );
-
-
-    savePersonnelStorage(
-        newList
-    );
-
-
-    renderManagementPersonnel();
-
-    renderHomePersonnel();
-
-}
-
-
-/* ==================================================
-   PERSONEL YÖNETİM LİSTESİ
-================================================== */
-
-function renderManagementPersonnel() {
-
-    const container =
-        document.getElementById(
-            "managementPersonnelList"
-        );
-
-
-    container.innerHTML = "";
-
-
-    const list =
-        getPersonnel();
-
-
-    if(
-        list.length === 0
-    ) {
-
-        container.innerHTML = `
-            <div class="empty-personnel">
-                Henüz personel eklenmedi.
-            </div>
-        `;
-
-        return;
-
-    }
-
-
-    const days = [
-
-        "Pazar",
-        "Pazartesi",
-        "Salı",
-        "Çarşamba",
-        "Perşembe",
-        "Cuma",
-        "Cumartesi"
-
-    ];
-
-
-    list.forEach(person => {
-
-
-        const row =
-            document.createElement(
-                "div"
-            );
-
-
-        row.className =
-            "personnel-management-row";
-
-
-        row.innerHTML = `
-
-            <div class="management-info">
-
-                <strong>
-
-                    ${escapeHtml(
-                        person.name
-                    )}
-
-                </strong>
-
-                <span>
-
-                    No:
-                    ${escapeHtml(
-                        person.personNo ||
-                        "-"
-                    )}
-
-                </span>
-
-                <span>
-
-                    ${person.shift}
-                    Postası
-
-                </span>
-
-                <span>
-
-                    İzin:
-                    ${
-                        days[
-                            Number(
-                                person.offDay
-                            )
-                        ]
-                    }
-
-                </span>
-
-            </div>
-
-
-            <div class="management-buttons">
-
-                <button
-                    class="btn btn-warning"
-                    onclick="
-                        editPersonnel(
-                            ${person.id}
-                        )
-                    ">
-
-                    Düzenle
-
-                </button>
-
-
-                <button
-                    class="btn btn-danger"
-                    onclick="
-                        deletePersonnel(
-                            ${person.id}
-                        )
-                    ">
-
-                    Sil
-
-                </button>
-
-            </div>
-
-        `;
-
-
-        container.appendChild(
-            row
-        );
-
-    });
-
-}
-
-
-/* ==================================================
+/* =====================================================
    POSTA AÇ
-================================================== */
+===================================================== */
 
-function openShift(shift) {
+async function openShift(shift) {
 
     currentShift =
         shift;
 
 
-    document
-        .getElementById(
-            "shiftTitle"
-        )
-        .innerText =
+    document.getElementById(
+        "shiftTitle"
+    ).textContent =
         shift +
         " POSTASI - TİTRE ÖLÇÜMLERİ";
 
 
-    document
-        .getElementById(
-            "measurementDate"
-        )
-        .value =
+    document.getElementById(
+        "measurementDate"
+    ).value =
         getToday();
 
 
@@ -1707,19 +1456,19 @@ function openShift(shift) {
     );
 
 
-    loadMeasurements();
+    await loadMeasurements();
 
 }
 
 
-/* ==================================================
-   POSTADAKİ PERSONELLERİ GETİR
-================================================== */
+/* =====================================================
+   POSTA PERSONELLERİ
+===================================================== */
 
-function getShiftPersonnel() {
+async function getShiftPersonnel() {
 
     const personnel =
-        getPersonnel();
+        await getPersonnel();
 
 
     return personnel.filter(
@@ -1731,11 +1480,11 @@ function getShiftPersonnel() {
 }
 
 
-/* ==================================================
-   PERSONEL SELECT OLUŞTUR
-================================================== */
+/* =====================================================
+   PERSONEL SELECT
+===================================================== */
 
-function createOperatorSelect(
+async function createOperatorSelect(
     selectedId = ""
 ) {
 
@@ -1753,7 +1502,6 @@ function createOperatorSelect(
 
     defaultOption.value = "";
 
-
     defaultOption.textContent =
         "Personel seçiniz";
 
@@ -1764,43 +1512,39 @@ function createOperatorSelect(
 
 
     const personnel =
-        getShiftPersonnel();
+        await getShiftPersonnel();
 
 
-    personnel.forEach(
-        person => {
+    personnel.forEach(person => {
 
-            const option =
-                document.createElement(
-                    "option"
-                );
-
-
-            option.value =
-                person.id;
-
-
-            option.textContent =
-                person.name;
-
-
-            if(
-                String(person.id) ===
-                String(selectedId)
-            ) {
-
-                option.selected =
-                    true;
-
-            }
-
-
-            select.appendChild(
-                option
+        const option =
+            document.createElement(
+                "option"
             );
 
+
+        option.value =
+            person.id;
+
+
+        option.textContent =
+            person.name;
+
+
+        if(
+            String(person.id) ===
+            String(selectedId)
+        ) {
+
+            option.selected =
+                true;
+
         }
-    );
+
+
+        select.appendChild(option);
+
+    });
 
 
     return select;
@@ -1808,23 +1552,19 @@ function createOperatorSelect(
 }
 
 
-/* ==================================================
-   YENİ ÖLÇÜM SATIRI
-================================================== */
+/* =====================================================
+   YENİ SATIR
+===================================================== */
 
-function addRow(values = {}) {
+async function addRow(values = {}) {
 
     const date =
-        document
-            .getElementById(
-                "measurementDate"
-            )
-            .value;
+        document.getElementById(
+            "measurementDate"
+        ).value;
 
 
-    if(
-        date !== getToday()
-    ) {
+    if(date !== getToday()) {
 
         alert(
             "Geçmiş tarihe yeni ölçüm eklenemez."
@@ -1847,18 +1587,6 @@ function addRow(values = {}) {
         );
 
 
-    const time =
-        values.time ||
-        new Date()
-            .toLocaleTimeString(
-                "tr-TR",
-                {
-                    hour: "2-digit",
-                    minute: "2-digit"
-                }
-            );
-
-
     /* SAAT */
 
     const timeCell =
@@ -1866,11 +1594,14 @@ function addRow(values = {}) {
             "td"
         );
 
+
     timeCell.className =
         "time-cell";
 
+
     timeCell.textContent =
-        time;
+        values.measurement_time ||
+        getCurrentTime();
 
 
     row.appendChild(
@@ -1878,21 +1609,21 @@ function addRow(values = {}) {
     );
 
 
-    /* ÖLÇÜMÜ YAPAN */
+    /* PERSONEL */
 
     const operatorCell =
         document.createElement(
             "td"
         );
 
+
     operatorCell.className =
         "operator-cell";
 
 
     const operatorSelect =
-        createOperatorSelect(
-            values.operatorId ||
-            ""
+        await createOperatorSelect(
+            values.operator_id || ""
         );
 
 
@@ -1906,7 +1637,7 @@ function addRow(values = {}) {
     );
 
 
-    /* ÖLÇÜM ALANLARI */
+    /* ÖLÇÜMLER */
 
     const fields = [
 
@@ -1926,52 +1657,40 @@ function addRow(values = {}) {
     ];
 
 
-    fields.forEach(
-        field => {
+    fields.forEach(field => {
+
+        const cell =
+            document.createElement("td");
 
 
-            const cell =
-                document.createElement(
-                    "td"
-                );
+        const input =
+            document.createElement("input");
 
 
-            const input =
-                document.createElement(
-                    "input"
-                );
+        input.value =
+            values[field] || "";
 
 
-            input.value =
-                values[field] ||
-                "";
+        cell.appendChild(
+            input
+        );
 
 
-            cell.appendChild(
-                input
-            );
+        row.appendChild(
+            cell
+        );
 
-
-            row.appendChild(
-                cell
-            );
-
-        }
-    );
+    });
 
 
     /* SİL */
 
     const deleteCell =
-        document.createElement(
-            "td"
-        );
+        document.createElement("td");
 
 
     const deleteButton =
-        document.createElement(
-            "button"
-        );
+        document.createElement("button");
 
 
     deleteButton.className =
@@ -1983,11 +1702,9 @@ function addRow(values = {}) {
 
 
     deleteButton.onclick =
-        function() {
+        () => {
 
-            deleteRow(
-                deleteButton
-            );
+            row.remove();
 
         };
 
@@ -2012,57 +1729,50 @@ function addRow(values = {}) {
 }
 
 
-/* ==================================================
-   SATIR SİL
-================================================== */
+/* =====================================================
+   SAAT
+===================================================== */
 
-function deleteRow(button) {
+function getCurrentTime() {
 
-    const date =
-        document
-            .getElementById(
-                "measurementDate"
-            )
-            .value;
+    const d =
+        new Date();
 
 
-    if(
-        date !== getToday()
-    ) {
-
-        alert(
-            "Geçmiş kayıt silinemez."
-        );
-
-        return;
-
-    }
-
-
-    button
-        .closest("tr")
-        .remove();
+    return (
+        String(
+            d.getHours()
+        ).padStart(2,"0")
+        +
+        ":"
+        +
+        String(
+            d.getMinutes()
+        ).padStart(2,"0")
+        +
+        ":"
+        +
+        String(
+            d.getSeconds()
+        ).padStart(2,"0")
+    );
 
 }
 
 
-/* ==================================================
+/* =====================================================
    ÖLÇÜMLERİ KAYDET
-================================================== */
+===================================================== */
 
-function saveMeasurements() {
+async function saveMeasurements() {
 
     const date =
-        document
-            .getElementById(
-                "measurementDate"
-            )
-            .value;
+        document.getElementById(
+            "measurementDate"
+        ).value;
 
 
-    if(
-        date !== getToday()
-    ) {
+    if(date !== getToday()) {
 
         alert(
             "Geçmiş kayıt değiştirilemez."
@@ -2079,20 +1789,23 @@ function saveMeasurements() {
         );
 
 
-    const data = [];
+    if(rows.length === 0) {
+
+        alert(
+            "Kaydedilecek ölçüm yok."
+        );
+
+        return;
+
+    }
 
 
-    let error =
-        false;
+    const records = [];
 
 
-    rows.forEach(row => {
-
-
-        if(error) {
-            return;
-        }
-
+    for(
+        const row of rows
+    ) {
 
         const operatorSelect =
             row.querySelector(
@@ -2106,12 +1819,9 @@ function saveMeasurements() {
         ) {
 
             alert(
-                row.cells[0]
-                    .innerText +
+                row.cells[0].textContent +
                 " saatindeki ölçüm için personel seçin."
             );
-
-            error = true;
 
             return;
 
@@ -2119,19 +1829,17 @@ function saveMeasurements() {
 
 
         const operatorId =
-            operatorSelect.value;
-
-
-        const selectedOption =
-            operatorSelect
-                .options[
-                    operatorSelect
-                        .selectedIndex
-                ];
+            Number(
+                operatorSelect.value
+            );
 
 
         const operatorName =
-            selectedOption.text;
+            operatorSelect
+                .options[
+                    operatorSelect.selectedIndex
+                ]
+                .text;
 
 
         const inputs =
@@ -2140,148 +1848,145 @@ function saveMeasurements() {
             );
 
 
-        data.push({
+        records.push({
 
-            id:
-                Date.now() +
-                Math.random(),
-
-
-            date:
+            measurement_date:
                 date,
-
 
             shift:
                 currentShift,
 
+            measurement_time:
+                row.cells[0].textContent,
 
-            operatorId:
+            operator_id:
                 operatorId,
 
-
-            operatorName:
+            operator_name:
                 operatorName,
 
-
-            time:
-                row.cells[0]
-                    .innerText,
-
-
             sat1ph:
-                inputs[0]
-                    .value,
-
+                inputs[0].value,
 
             sat1alk:
-                inputs[1]
-                    .value,
-
+                inputs[1].value,
 
             sat2ph:
-                inputs[2]
-                    .value,
-
+                inputs[2].value,
 
             sat2alk:
-                inputs[3]
-                    .value,
-
+                inputs[3].value,
 
             kirec2:
-                inputs[4]
-                    .value,
-
+                inputs[4].value,
 
             kirec11:
-                inputs[5]
-                    .value,
-
+                inputs[5].value,
 
             kirec12:
-                inputs[6]
-                    .value,
-
+                inputs[6].value,
 
             col1:
-                inputs[7]
-                    .value,
-
+                inputs[7].value,
 
             brix:
-                inputs[8]
-                    .value,
-
+                inputs[8].value,
 
             col2:
-                inputs[9]
-                    .value,
-
+                inputs[9].value,
 
             col3:
-                inputs[10]
-                    .value,
-
+                inputs[10].value,
 
             col4:
-                inputs[11]
-                    .value
+                inputs[11].value
 
         });
 
-    });
-
-
-    if(error) {
-        return;
     }
 
 
-    const key =
-        "measurements_" +
-        currentShift +
-        "_" +
-        date;
+    try {
+
+        /*
+         * Aynı gün/posta kayıtlarını
+         * önce siliyoruz.
+         *
+         * Sonra ekrandaki güncel tabloyu
+         * yeniden kaydediyoruz.
+         */
+
+        const {
+            error:deleteError
+        } = await db
+            .from("measurements")
+            .delete()
+            .eq(
+                "measurement_date",
+                date
+            )
+            .eq(
+                "shift",
+                currentShift
+            );
 
 
-    localStorage.setItem(
-        key,
-        JSON.stringify(data)
-    );
+        if(deleteError) {
+
+            throw deleteError;
+
+        }
 
 
-    alert(
-        "Ölçümler başarıyla kaydedildi."
-    );
+        const {
+            error:insertError
+        } = await db
+            .from("measurements")
+            .insert(
+                records
+            );
+
+
+        if(insertError) {
+
+            throw insertError;
+
+        }
+
+
+        showStatus(
+            "measurementStatus",
+            "Ölçümler Supabase'e kaydedildi.",
+            "success"
+        );
+
+
+    } catch(error) {
+
+        console.error(error);
+
+        showStatus(
+            "measurementStatus",
+            "Ölçümler kaydedilemedi: " +
+            error.message,
+            "error"
+        );
+
+    }
 
 }
 
 
-/* ==================================================
+/* =====================================================
    ÖLÇÜMLERİ YÜKLE
-================================================== */
+===================================================== */
 
-function loadMeasurements() {
+async function loadMeasurements() {
 
     const date =
-        document
-            .getElementById(
-                "measurementDate"
-            )
-            .value;
-
-
-    const key =
-        "measurements_" +
-        currentShift +
-        "_" +
-        date;
-
-
-    const saved =
-        localStorage.getItem(
-            key
-        );
+        document.getElementById(
+            "measurementDate"
+        ).value;
 
 
     const body =
@@ -2293,44 +1998,124 @@ function loadMeasurements() {
     body.innerHTML = "";
 
 
-    if(saved) {
+    document.getElementById(
+        "measurementStatus"
+    ).className =
+        "status-box";
 
-        const data =
-            JSON.parse(
-                saved
+
+    try {
+
+        const {
+            data,
+            error
+        } = await db
+            .from("measurements")
+            .select("*")
+            .eq(
+                "measurement_date",
+                date
+            )
+            .eq(
+                "shift",
+                currentShift
+            )
+            .order(
+                "measurement_time",
+                {
+                    ascending:true
+                }
             );
 
 
-        data.forEach(
-            item => {
+        if(error) {
 
-                addRow(
-                    item
-                );
+            throw error;
 
-            }
+        }
+
+
+        for(
+            const item of (data || [])
+        ) {
+
+            await addRow({
+                measurement_time:
+                    item.measurement_time,
+
+                operator_id:
+                    item.operator_id,
+
+                sat1ph:
+                    item.sat1ph,
+
+                sat1alk:
+                    item.sat1alk,
+
+                sat2ph:
+                    item.sat2ph,
+
+                sat2alk:
+                    item.sat2alk,
+
+                kirec2:
+                    item.kirec2,
+
+                kirec11:
+                    item.kirec11,
+
+                kirec12:
+                    item.kirec12,
+
+                col1:
+                    item.col1,
+
+                brix:
+                    item.brix,
+
+                col2:
+                    item.col2,
+
+                col3:
+                    item.col3,
+
+                col4:
+                    item.col4
+
+            });
+
+        }
+
+
+        updateReadonlyState();
+
+
+    } catch(error) {
+
+        console.error(error);
+
+        showStatus(
+            "measurementStatus",
+            "Ölçümler yüklenemedi: " +
+            error.message,
+            "error"
         );
 
     }
 
-
-    updateReadonlyState();
-
 }
 
 
-/* ==================================================
-   GEÇMİŞ KAYIT KİLİDİ
-================================================== */
+/* =====================================================
+   GEÇMİŞ TARİH KONTROL
+===================================================== */
 
 function updateReadonlyState() {
 
     const date =
-        document
-            .getElementById(
-                "measurementDate"
-            )
-            .value;
+        document.getElementById(
+            "measurementDate"
+        ).value;
 
 
     const oldDate =
@@ -2357,14 +2142,11 @@ function updateReadonlyState() {
 
     if(oldDate) {
 
-
         warning.style.display =
             "block";
 
-
         saveButton.style.display =
             "none";
-
 
         newButton.style.display =
             "none";
@@ -2376,10 +2158,7 @@ function updateReadonlyState() {
             )
             .forEach(
                 input => {
-
-                    input.disabled =
-                        true;
-
+                    input.disabled = true;
                 }
             );
 
@@ -2390,10 +2169,7 @@ function updateReadonlyState() {
             )
             .forEach(
                 select => {
-
-                    select.disabled =
-                        true;
-
+                    select.disabled = true;
                 }
             );
 
@@ -2404,24 +2180,18 @@ function updateReadonlyState() {
             )
             .forEach(
                 button => {
-
-                    button.disabled =
-                        true;
-
+                    button.disabled = true;
                 }
             );
 
 
     } else {
 
-
         warning.style.display =
             "none";
 
-
         saveButton.style.display =
             "inline-block";
-
 
         newButton.style.display =
             "inline-block";
@@ -2433,10 +2203,7 @@ function updateReadonlyState() {
             )
             .forEach(
                 input => {
-
-                    input.disabled =
-                        false;
-
+                    input.disabled = false;
                 }
             );
 
@@ -2447,10 +2214,7 @@ function updateReadonlyState() {
             )
             .forEach(
                 select => {
-
-                    select.disabled =
-                        false;
-
+                    select.disabled = false;
                 }
             );
 
@@ -2461,10 +2225,7 @@ function updateReadonlyState() {
             )
             .forEach(
                 button => {
-
-                    button.disabled =
-                        false;
-
+                    button.disabled = false;
                 }
             );
 
@@ -2473,47 +2234,27 @@ function updateReadonlyState() {
 }
 
 
-/* ==================================================
-   GÜVENLİ METİN
-================================================== */
+/* =====================================================
+   HTML GÜVENLİĞİ
+===================================================== */
 
 function escapeHtml(value) {
 
-    return String(value)
-
-        .replace(
-            /&/g,
-            "&amp;"
-        )
-
-        .replace(
-            /</g,
-            "&lt;"
-        )
-
-        .replace(
-            />/g,
-            "&gt;"
-        )
-
-        .replace(
-            /"/g,
-            "&quot;"
-        )
-
-        .replace(
-            /'/g,
-            "&#039;"
-        );
+    return String(value ?? "")
+        .replace(/&/g,"&amp;")
+        .replace(/</g,"&lt;")
+        .replace(/>/g,"&gt;")
+        .replace(/"/g,"&quot;")
+        .replace(/'/g,"&#039;");
 
 }
 
 
-/* ==================================================
+/* =====================================================
    BAŞLANGIÇ
-================================================== */
+===================================================== */
 
-renderHomePersonnel();
+loadHomePersonnel();
 
 </script>
 
